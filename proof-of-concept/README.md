@@ -41,8 +41,10 @@ $ ./websockify 1234 localhost:8888
 
 Now you are ready to try to control GPIO remotely from your laptop.
 
-Edit `toggle_led.py`, fix the IP address and run the following, which should
-flash the led for half a second:
+Edit `toggle_led.py` and fix the IP address: it should point to the IP address
+of the raspberry, which should be in your LAN.
+
+Run the following, which should flash the led for half a second:
 
 ```
 $ pip install pigpio
@@ -52,3 +54,15 @@ $ python toggle_led.py
 This connects to the "normal" pigpiod server. It should just work.
 
 ## Setup (pyscript)
+
+Open `toggle_led.html` and modify the IP address to point to your
+raspberry. Note that this time it is connecting to the WebSocket server run by
+websockify.
+
+Start a local webserver on your laptop:
+```
+python3 -m http.server
+```
+
+Open `http://0.0.0.0:8000/toggle_led.html`: hopefully the two buttons should
+work.
