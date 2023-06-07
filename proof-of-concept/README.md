@@ -41,9 +41,14 @@ $ ./websockify 1234 localhost:8888
 
 Now you are ready to try to control GPIO remotely from your laptop.
 
-The following should flash the led for half a second:
+Edit `toggle_led.py`, fix the IP address and run the following, which should
+flash the led for half a second:
 
 ```
 $ pip install pigpio
 $ python toggle_led.py
 ```
+
+This connects to the "normal" pigpiod server. It should just work.
+
+## Setup (pyscript)

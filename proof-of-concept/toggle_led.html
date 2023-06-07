@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Toggle led</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://pyscript.net/releases/2023.03.1/pyscript.css" />
+    <link rel="stylesheet" href="https://pyscript.net/examples/assets/css/examples.css" />
+    <script defer src="https://pyscript.net/releases/2023.03.1/pyscript.js"></script>
+
+    <style>
+      .big {
+          font-size: 3em;
+      }
+    </style>
+</head>
+<body>
+
+  <py-tutor>
+      <py-config>
+        plugins = ["https://pyscript.net/releases/2023.03.1/plugins/python/py_tutor.py"]
+        packages = ['wasmsockets']
+      </py-config>
+
+      <py-script>
+    import asyncio
+    from wasmsockets.client import connect
+
+    URL = 'ws://192.168.178.148:1234'
+
+    RED_ON  = b'\x04\x00\x00\x00\x12\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
+    RED_OFF = b'\x04\x00\x00\x00\x12\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+
+    _SOCK = None
+    async def get_socket():
+        global _SOCK
+        if _SOCK is None:
+            _SOCK = await connect(URL)
+        return _SOCK
+
+    async def turn_on():
+        #print('ON')
+        sock = await get_socket()
+        await sock.send(RED_ON)
+        await sock.recv()
+
+    async def turn_off():
+        #print('OFF')
+        sock = await get_socket()
+        await sock.send(RED_OFF)
+        await sock.recv()
+      </py-script>
+  </py-tutor>
+
+  <button class="big" py-click="turn_on()">Led ON</button> &nbsp;&nbsp;&nbsp;
+  <button class="big" py-click="turn_off()">Led OFF</button>
+
+</body>
+</html>
