@@ -59,7 +59,7 @@
         def turn_off():
             my_worker.postMessage("turn_off")
 
-        my_worker = XWorker('./pigpio_worker.py', type='py')
+        my_worker = XWorker('./pigpio_worker.py', type='py', config='./pigpio.toml')
 
         my_worker.sync.websocket_open = websocket_open
         my_worker.sync.websocket_close = websocket_close
