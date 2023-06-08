@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+        <title>python workers</title>
+        <script type="importmap">
+            {
+                "imports": {
+                    "basic-devtools": "/pyscript.core/node_modules/basic-devtools/esm/index.js",
+                    "coincident/structured": "/pyscript.core/node_modules/coincident/structured.js",
+                    "@ungap/with-resolvers": "/pyscript.core/node_modules/@ungap/with-resolvers/index.js",
+                    "@pyscript/core": "/pyscript.core/esm/index.js"
+                }
+            }
+        </script>
+        <script type="module">
+            import "@pyscript/core";
+        </script>
+    </head>
+    <body>
+      <script type="py" config="./pigpio.toml">
+        from js import XWorker
+        import asyncio
+        from wasmsockets.client import connect
+
+        WEB_SOCKETS = []
+        async def websocket_open(url):
+            n = len(WEB_SOCKETS)
+            sock = await connect(url)
+            WEB_SOCKETS.append(sock)
+            return n
+
+        async def websocket_close(n):
+            sock = WEB_SOCKETS[n]
+            await sock.close()
+            WEB_SOCKETS[n] = None
+            return 0
+
+        async def websocket_send(n, data_str):
+            assert type(data_str) is str
+            data_bytes = data_str.encode('latin-1')
+            sock = WEB_SOCKETS[n]
+            await sock.send(data_bytes)
+            return 0
+
+        async def websocket_recv(n, bufsize):
+            sock = WEB_SOCKETS[n]
+            data_buf = await(sock.recv()) # ArrayBuffer
+            data_bytes = data_buf.to_bytes()
+            data_str = data_bytes.decode('latin-1')
+            if bufsize != -1 and len(data_bytes) != bufsize:
+                js.consoel.warn(f'WARNING: expected {bufsize} bytes, got {len(data_bytes)}')
+            return data_str
+
+        def turn_on():
+            my_worker.postMessage("turn_on")
+
+        def turn_off():
+            my_worker.postMessage("turn_off")
+
+        my_worker = XWorker('./pigpio_worker.py', type='py')
+
+        my_worker.sync.websocket_open = websocket_open
+        my_worker.sync.websocket_close = websocket_close
+        my_worker.sync.websocket_send = websocket_send
+        my_worker.sync.websocket_recv = websocket_recv
+      </script>
+
+      <h1>Toggle led using workers</h1>
+      <button class="big" py-click="turn_on()">Led ON</button> &nbsp;&nbsp;&nbsp;
+      <button class="big" py-click="turn_off()">Led OFF</button>
+
+    </body>
+</html>
