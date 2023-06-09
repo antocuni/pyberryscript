@@ -1,15 +1,9 @@
-print('[worker] gpiozero demo')
-import pyscript_sync
-pyscript_sync.monkey_patch()
-
+import pyberryscript
+pyberryscript.setup(address='192.168.178.148', port='1234')
 
 import time
 import os
 from gpiozero import LED, PWMLED
-
-os.environ['GPIOZERO_PIN_FACTORY'] = 'pigpio'
-os.environ['PIGPIO_ADDR'] = '192.168.178.148'
-os.environ['PIGPIO_PORT'] = '1234'
 
 red = LED(18)
 green = LED(23)
