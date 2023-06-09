@@ -2,6 +2,7 @@ import asyncio
 from wasmsockets.client import connect
 
 def setup(xworker):
+    xworker.sync.sleep = asyncio.sleep
     xworker.sync.websocket_open = websocket_open
     xworker.sync.websocket_close = websocket_close
     xworker.sync.websocket_send = websocket_send

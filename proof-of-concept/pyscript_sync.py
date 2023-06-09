@@ -2,7 +2,9 @@ import js
 from js import xworker
 
 def monkey_patch():
+    import time
     import socket
+    time.sleep = xworker.sync.sleep
     socket.create_connection = ws_create_connection
 
 

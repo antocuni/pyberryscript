@@ -1,6 +1,7 @@
 import pyscript_sync
 pyscript_sync.monkey_patch()
 
+import time
 import pigpio          # https://abyz.me.uk/rpi/pigpio/python.html
 
 
@@ -16,13 +17,23 @@ def turn_on():
 def turn_off():
     pi.write(RED, 0)
 
-def on_message(event):
-    if event.data == 'turn_on':
+def flash():
+    for i in range(5):
         turn_on()
-    elif event.data == 'turn_off':
+        time.sleep(0.5)
         turn_off()
+        time.sleep(0.5)
+
+def on_message(event):
+    m = event.data
+    if m == 'turn_on':
+        turn_on()
+    elif m == 'turn_off':
+        turn_off()
+    elif m == 'flash':
+        flash()
     else:
-        print('[worker] UNKNOWN MESSAGE', event.data)
+        print('[worker] UNKNOWN MESSAGE', m)
     #xworker.postMessage("bye")
 
 xworker.onmessage = on_message
