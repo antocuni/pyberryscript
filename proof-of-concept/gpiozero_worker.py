@@ -5,7 +5,7 @@ pyscript_sync.monkey_patch()
 
 import time
 import os
-from gpiozero import LED
+from gpiozero import LED, PWMLED
 
 os.environ['GPIOZERO_PIN_FACTORY'] = 'pigpio'
 os.environ['PIGPIO_ADDR'] = '192.168.178.148'
@@ -21,14 +21,14 @@ def turn_on():
 def turn_off():
     red.off()
 
-def flash():
+def blink():
     for i in range(5):
         red.on()
         green.off()
-        sleep(0.5)
+        time.sleep(0.5)
         red.off()
         green.on()
-        sleep(0.5)
+        time.sleep(0.5)
 
 def on_message(event):
     m = event.data
@@ -36,8 +36,8 @@ def on_message(event):
         turn_on()
     elif m == 'turn_off':
         turn_off()
-    elif m == 'flash':
-        flash()
+    elif m == 'blink':
+        blink()
     else:
         print('[worker] UNKNOWN MESSAGE', m)
     #xworker.postMessage("bye")

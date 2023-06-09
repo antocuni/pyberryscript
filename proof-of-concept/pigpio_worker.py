@@ -17,7 +17,7 @@ def turn_on():
 def turn_off():
     pi.write(RED, 0)
 
-def flash():
+def blink():
     for i in range(5):
         turn_on()
         time.sleep(0.5)
@@ -30,8 +30,8 @@ def on_message(event):
         turn_on()
     elif m == 'turn_off':
         turn_off()
-    elif m == 'flash':
-        flash()
+    elif m == 'blink':
+        blink()
     else:
         print('[worker] UNKNOWN MESSAGE', m)
     #xworker.postMessage("bye")

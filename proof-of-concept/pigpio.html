@@ -29,8 +29,8 @@
         def turn_off():
             my_worker.postMessage("turn_off")
 
-        def flash():
-            my_worker.postMessage("flash")
+        def blink():
+            my_worker.postMessage("blink")
 
         my_worker = XWorker('./pigpio_worker.py', type='py', config='./pigpio.toml')
         pyscript_sync_main.setup(my_worker)
@@ -39,6 +39,6 @@
       <h1>Toggle led using workers</h1>
       <button py-click="turn_on()">Led ON</button> <br><br>
       <button py-click="turn_off()">Led OFF</button> <br><br>
-      <button py-click="flash()">Flash</button>
+      <button py-click="blink()">Blink</button>
     </body>
 </html>
