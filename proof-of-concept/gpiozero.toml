@@ -1,0 +1,4 @@
+packages = ["wasmsockets", "gpiozero"]
+
+[[fetch]]
+files = ["./pyscript_sync.py", "./pyscript_sync_main.py", "./pigpio.py"]

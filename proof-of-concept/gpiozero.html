@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+        <title>gpiozero demo</title>
+        <script type="importmap">
+            {
+                "imports": {
+                    "basic-devtools": "/pyscript.core/node_modules/basic-devtools/esm/index.js",
+                    "coincident/structured": "/pyscript.core/node_modules/coincident/structured.js",
+                    "@ungap/with-resolvers": "/pyscript.core/node_modules/@ungap/with-resolvers/index.js",
+                    "@pyscript/core": "/pyscript.core/esm/index.js"
+                }
+            }
+        </script>
+        <script type="module">
+            import "@pyscript/core";
+        </script>
+    </head>
+    <body>
+      <script type="py" config="./gpiozero.toml">
+        from js import XWorker
+        import pyscript_sync_main
+
+        def turn_on():
+            my_worker.postMessage("turn_on")
+
+        def turn_off():
+            my_worker.postMessage("turn_off")
+
+        def flash():
+            my_worker.postMessage("flash")
+
+        my_worker = XWorker('./gpiozero_worker.py', type='py', config='./gpiozero.toml')
+        pyscript_sync_main.setup(my_worker)
+      </script>
+
+      <h1>gpiozero demo</h1>
+      <button py-click="turn_on()">Led ON</button> <br><br>
+      <button py-click="turn_off()">Led OFF</button> <br><br>
+      <button py-click="flash()">Flash</button>
+    </body>
+</html>
