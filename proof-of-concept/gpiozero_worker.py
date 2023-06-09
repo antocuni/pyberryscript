@@ -29,6 +29,9 @@ def blink():
         red.off()
         green.on()
         time.sleep(0.5)
+    #
+    red.off()
+    green.off()
 
 def on_message(event):
     m = event.data
