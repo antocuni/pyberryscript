@@ -1,4 +1,4 @@
 packages = ["wasmsockets"]
 
 [[fetch]]
-files = ["./pigpio_pyscript.py"]
+files = ["./pyscript_sync.py", "./pigpio.py"]
