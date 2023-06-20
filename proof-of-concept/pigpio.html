@@ -3,20 +3,8 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-        <title>python workers</title>
-        <script type="importmap">
-            {
-                "imports": {
-                    "basic-devtools": "/pyscript.core/node_modules/basic-devtools/esm/index.js",
-                    "coincident/structured": "/pyscript.core/node_modules/coincident/structured.js",
-                    "@ungap/with-resolvers": "/pyscript.core/node_modules/@ungap/with-resolvers/index.js",
-                    "@pyscript/core": "/pyscript.core/esm/index.js"
-                }
-            }
-        </script>
-        <script type="module">
-            import "@pyscript/core";
-        </script>
+        <title>pyscript pigpio</title>
+        <script type="module" src="/pyscript.core/min.js"></script>
     </head>
     <body>
       <script type="py" config="./pigpio.toml">
